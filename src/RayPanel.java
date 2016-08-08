@@ -188,8 +188,9 @@ public class RayPanel extends JPanel implements KeyListener, Runnable {
         //The movement speeds are this small because we check the current pressed Keys every single time the game loop runs
         //Which processes the key lots of times for even a quick press
         double moveSpeed = 0.0000006; //the constant value is in squares/second
-        double rotSpeed = 0.0000002;  //the constant value is in radians/second
-        double oldDirX, oldPlaneX;
+        double rotSpeed = 0.0000003;  //the constant value is in radians/second
+        double negativeRotSpeed = -rotSpeed;
+        double oldDirX = dirX, oldPlaneX = planeX;
 
         switch(keyCode)
         {
@@ -210,20 +211,14 @@ public class RayPanel extends JPanel implements KeyListener, Runnable {
                 }
                 break;
             case KeyEvent.VK_RIGHT:
-                //both camera direction and camera plane must be rotated
-                oldDirX = dirX;
-                dirX = dirX * Math.cos(-rotSpeed) - dirY * Math.sin(-rotSpeed);
-                dirY = oldDirX * Math.sin(-rotSpeed) + dirY * Math.cos(-rotSpeed);
-                oldPlaneX = planeX;
-                planeX = planeX * Math.cos(-rotSpeed) - planeY * Math.sin(-rotSpeed);
-                planeY = oldPlaneX * Math.sin(-rotSpeed) + planeY * Math.cos(-rotSpeed);
+                dirX = dirX * Math.cos(negativeRotSpeed) - dirY * Math.sin(negativeRotSpeed);
+                dirY = oldDirX * Math.sin(negativeRotSpeed) + dirY * Math.cos(negativeRotSpeed);
+                planeX = planeX * Math.cos(negativeRotSpeed) - planeY * Math.sin(negativeRotSpeed);
+                planeY = oldPlaneX * Math.sin(negativeRotSpeed) + planeY * Math.cos(negativeRotSpeed);
                 break;
             case KeyEvent.VK_LEFT:
-                //both camera direction and camera plane must be rotated
-                oldDirX = dirX;
                 dirX = dirX * Math.cos(rotSpeed) - dirY * Math.sin(rotSpeed);
                 dirY = oldDirX * Math.sin(rotSpeed) + dirY * Math.cos(rotSpeed);
-                oldPlaneX = planeX;
                 planeX = planeX * Math.cos(rotSpeed) - planeY * Math.sin(rotSpeed);
                 planeY = oldPlaneX * Math.sin(rotSpeed) + planeY * Math.cos(rotSpeed);
                 break;
