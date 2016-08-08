@@ -151,6 +151,37 @@ public class RayPanel extends JPanel implements KeyListener, Runnable {
                 //oh well
             }
         }
+
+        //Mini map
+        int miniMapWidth = worldMap.length;
+        int miniMapHeight = worldMap[0].length;
+        int scale = 5;
+
+        for(int x = 0; x < miniMapWidth; x++){
+            for(int y = 0; y < miniMapHeight; y++){
+                int square = worldMap[x][y];
+                Color colour;
+                switch(square){
+                    case 0:  colour = new Color(100, 100, 100, 100); break;
+                    case 1:  colour = Color.RED;  break; //red
+                    case 2:  colour = Color.YELLOW;  break; //green
+                    case 3:  colour = Color.GREEN;   break; //blue
+                    case 4:  colour = Color.ORANGE;  break; //white
+                    default: colour = Color.BLACK; break;
+                }
+
+                g.setColor(colour);
+                g.fillRect(width - (miniMapWidth* scale) + (x*scale),  height - (miniMapHeight*scale) + (y*scale), scale,  scale);
+
+                g.setColor(Color.DARK_GRAY);
+                g.drawRect(width - (miniMapWidth * scale) + (x * scale), height - (miniMapHeight * scale) + (y * scale), width - (miniMapWidth * scale) + x + scale, height - (miniMapHeight* scale) + y + scale);
+            }
+        }
+
+        g.setColor(Color.MAGENTA);
+        g.fillOval(width - (miniMapWidth*scale) + ((int) posX*scale),  height - (miniMapHeight*scale) + ((int) posY*scale), scale, scale);
+        g.setColor(Color.DARK_GRAY);
+        g.drawLine(width - (miniMapWidth*scale) + ((int) posX*scale) + 2,  height - (miniMapHeight*scale) + ((int) posY*scale) + 2, (int) ((width - (miniMapWidth*scale) + ((int) posX*scale)) + dirX * 30), (int) ((height - (miniMapHeight*5) + ((int) posY*scale) + dirY * 30)));
     }
 
     public void movePlayer(int keyCode){
