@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
 import java.util.*;
 
 public class RayPanel extends JPanel implements KeyListener, Runnable {
@@ -120,35 +121,48 @@ public class RayPanel extends JPanel implements KeyListener, Runnable {
             }
 
             //choose wall color (based on map value)
-            Color colour = null;
+            /*Color colour = null;
             switch (worldMap[mapX][mapY]) {
-                case 1:
-                    colour = Color.RED;
-                    break; //red
-                case 2:
-                    colour = Color.YELLOW;
-                    break; //green
-                case 3:
-                    colour = Color.GREEN;
-                    break; //blue
-                case 4:
-                    colour = Color.ORANGE;
-                    break; //white
-                default:
-                    colour = Color.BLACK;
-                    break; //yellow
+                case 1: colour = Color.RED; break;
+                case 2: colour = Color.YELLOW; break;
+                case 3: colour = Color.GREEN; break;
+                case 4: colour = Color.ORANGE; break;
+                default: colour = Color.BLACK; break;
+            }
+            */
+
+            BufferedImage img = null;
+            switch(worldMap[mapX][mapY]){
+                case 1:  img = Texture.BRICK.getImage();  break; //red
+                case 2:  img = Texture.MOSS.getImage();  break; //green
+                case 3:  img = Texture.STONE.getImage();   break; //blue
+                case 4:  img = Texture.WOOD.getImage();  break; //white
+                default: img = Texture.EAGLE.getImage(); break; //yellow
             }
 
+            double wallX; //get the x of wall for the current ray, so we can grab the right pixels from the texture
+            if (side){
+                wallX = rayPosX + perpWallDist * rayDirX;
+            }else{
+                wallX = rayPosY + perpWallDist * rayDirY;
+            }
+            wallX -= Math.floor(wallX);
 
-            try {
-                //System.out.println("x" + imageX + ", y" + imageY);
-                if (side) {
-                    colour = colour.darker();
+            int imageX = (int) Math.floor(wallX * 64);
+            int imageY;
+            for(int i = drawStart; i <= drawEnd; i++) {
+                imageY = (int) Math.ceil(((double) 64 / lineHeight) * (i - drawStart));
+                try {
+                    //System.out.println("x" + imageX + ", y" + imageY);
+                    Color colour = new Color(img.getRGB(imageX, imageY));
+                    if (side) {
+                        colour = colour.darker();
+                    }
+                    g.setColor(colour);
+                    g.drawLine(x, i, x, i);
+                } catch (ArrayIndexOutOfBoundsException ex) {
+                    //oh well
                 }
-                g.setColor(colour);
-                g.drawLine(x, drawStart, x, drawEnd);
-            } catch (ArrayIndexOutOfBoundsException ex) {
-                //oh well
             }
         }
 
