@@ -131,7 +131,7 @@ public class RayPanel extends JPanel implements KeyListener, Runnable {
             }
             */
 
-            BufferedImage img = null;
+            BufferedImage img;
             switch(worldMap[mapX][mapY]){
                 case 1:  img = Texture.BRICK.getImage();  break; //red
                 case 2:  img = Texture.MOSS.getImage();  break; //green
@@ -148,10 +148,10 @@ public class RayPanel extends JPanel implements KeyListener, Runnable {
             }
             wallX -= Math.floor(wallX);
 
-            int imageX = (int) Math.floor(wallX * 64);
+            int imageX = (int) Math.floor(wallX * img.getWidth());
             int imageY;
             for(int i = drawStart; i <= drawEnd; i++) {
-                imageY = (int) Math.ceil(((double) 64 / lineHeight) * (i - drawStart));
+                imageY = (int) Math.ceil(((double) img.getHeight() / lineHeight) * (i - drawStart));
                 try {
                     //System.out.println("x" + imageX + ", y" + imageY);
                     Color colour = new Color(img.getRGB(imageX, imageY));
