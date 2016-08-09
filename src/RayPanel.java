@@ -171,17 +171,17 @@ public class RayPanel extends JPanel implements KeyListener, Runnable {
                 }
 
                 g.setColor(colour);
-                g.fillRect(width - (miniMapWidth* scale) + (x*scale),  height - (miniMapHeight*scale) + (y*scale), scale,  scale);
+                g.fillRect(width - ((x + 1) * scale),  height - (miniMapHeight * scale) + (y * scale), scale,  scale);
 
                 g.setColor(Color.DARK_GRAY);
-                g.drawRect(width - (miniMapWidth * scale) + (x * scale), height - (miniMapHeight * scale) + (y * scale), width - (miniMapWidth * scale) + x + scale, height - (miniMapHeight* scale) + y + scale);
+                g.drawRect(width - ((x + 1) * scale), height - (miniMapHeight * scale) + (y * scale), width - (miniMapWidth * scale) + x + scale, height - (miniMapHeight* scale) + y + scale);
             }
         }
 
         g.setColor(Color.MAGENTA);
-        g.fillOval(width - (miniMapWidth*scale) + ((int) posX*scale),  height - (miniMapHeight*scale) + ((int) posY*scale), scale, scale);
+        g.fillOval(width - ((int) (posX + 1)*scale),  height - (miniMapHeight*scale) + ((int) posY*scale), scale, scale);
         g.setColor(Color.DARK_GRAY);
-        g.drawLine(width - (miniMapWidth*scale) + ((int) posX*scale) + 2,  height - (miniMapHeight*scale) + ((int) posY*scale) + 2, (int) ((width - (miniMapWidth*scale) + ((int) posX*scale)) + dirX * 30), (int) ((height - (miniMapHeight*5) + ((int) posY*scale) + dirY * 30)));
+        g.drawLine(width - ((int) (posX + 1)*scale) + 2,  height - (miniMapHeight*scale) + ((int) posY*scale) + 2, (int) ((width - ((int) (posX + 1)*scale)) - dirX * 30), (int) ((height - (miniMapHeight*5) + ((int) posY*scale) + dirY * 30)));
     }
 
     public void movePlayer(int keyCode){
