@@ -189,7 +189,7 @@ public class RayPanel extends JPanel implements KeyListener, Runnable {
         //Which processes the key lots of times for even a quick press
         double moveSpeed = 0.0000006; //the constant value is in squares/second
         double rotSpeed = 0.0000003;  //the constant value is in radians/second
-        double negativeRotSpeed = -rotSpeed;
+        double negativeRotSpeed = rotSpeed * -1.1;
         double oldDirX = dirX, oldPlaneX = planeX;
 
         switch(keyCode)
