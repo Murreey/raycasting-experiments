@@ -112,9 +112,7 @@ public class RayPanel extends JPanel implements KeyListener, Runnable {
 
             //calculate lowest and highest pixel to fill in current stripe
             int drawStart = -lineHeight / 2 + height / 2;
-            if (drawStart < 0) {
-                drawStart = 0;
-            }
+
             int drawEnd = lineHeight / 2 + height / 2;
             if (drawEnd >= height) {
                 drawEnd = height - 1;
@@ -150,8 +148,25 @@ public class RayPanel extends JPanel implements KeyListener, Runnable {
 
             int imageX = (int) Math.floor(wallX * img.getWidth());
             int imageY;
+            int imageStart = 0;
+
+            if (drawStart < 0) {
+                //System.out.println("Attempted to set a drawStart below 0: " + drawStart);
+                //If we're trying to start the line before 0, it starts above the screen
+                //so we set the start to 0 (so it only draws what we need to see)
+                //but need to calculate an offset so we still grab the right colour from the image
+                //even with an offset starting point
+                imageStart = (int) Math.floor(((double) img.getHeight() / (lineHeight) * (drawStart)));
+                //imageStart = -drawStart*lineHeight;
+                //System.out.println(imageStart);
+                //drawStart = 0;
+            }
+
             for(int i = drawStart; i <= drawEnd; i++) {
-                imageY = (int) Math.ceil(((double) img.getHeight() / lineHeight) * (i - drawStart));
+                imageY = (int) Math.ceil(((double) img.getHeight() / (lineHeight) * (i - drawStart)));
+                if(imageStart != 0){
+                    //System.out.println(imageStart + ", " + imageY);
+                }
                 try {
                     //System.out.println("x" + imageX + ", y" + imageY);
                     Color colour = new Color(img.getRGB(imageX, imageY));
