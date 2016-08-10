@@ -162,7 +162,14 @@ public class RayPanel extends JPanel implements KeyListener, Runnable {
                 //drawStart = 0;
             }
 
+            if(drawStart < -2000){
+                drawStart = 0;
+            }
+
             for(int i = drawStart; i <= drawEnd; i++) {
+                if(i > height){
+                    continue;
+                }
                 imageY = (int) Math.ceil(((double) img.getHeight() / (lineHeight) * (i - drawStart)));
                 if(imageStart != 0){
                     //System.out.println(imageStart + ", " + imageY);
