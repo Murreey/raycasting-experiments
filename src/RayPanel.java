@@ -148,32 +148,11 @@ public class RayPanel extends JPanel implements KeyListener, Runnable {
 
             int imageX = (int) Math.floor(wallX * img.getWidth());
             int imageY;
-            int imageStart = 0;
 
-            if (drawStart < 0) {
-                //System.out.println("Attempted to set a drawStart below 0: " + drawStart);
-                //If we're trying to start the line before 0, it starts above the screen
-                //so we set the start to 0 (so it only draws what we need to see)
-                //but need to calculate an offset so we still grab the right colour from the image
-                //even with an offset starting point
-                imageStart = (int) Math.floor(((double) img.getHeight() / (lineHeight) * (drawStart)));
-                //imageStart = -drawStart*lineHeight;
-                //System.out.println(imageStart);
-                //drawStart = 0;
-            }
-
-            if(drawStart < -2000){
-                drawStart = 0;
-            }
-
-            for(int i = drawStart; i <= drawEnd; i++) {
-                if(i > height){
-                    continue;
-                }
+            //If the start of the line is above the screen, just start this loop from 0 (we can't see anything above that)
+            //Else, start from the start of the line
+            for(int i = drawStart < 0 ? 0 : drawStart; i <= drawEnd; i++) {
                 imageY = (int) Math.ceil(((double) img.getHeight() / (lineHeight) * (i - drawStart)));
-                if(imageStart != 0){
-                    //System.out.println(imageStart + ", " + imageY);
-                }
                 try {
                     //System.out.println("x" + imageX + ", y" + imageY);
                     Color colour = new Color(img.getRGB(imageX, imageY));
