@@ -4,6 +4,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.util.*;
+import java.util.Timer;
 
 public class RayPanel extends JPanel implements KeyListener, Runnable {
     public boolean isRunning = false;
@@ -13,10 +14,21 @@ public class RayPanel extends JPanel implements KeyListener, Runnable {
     public int width, height;
     public int[][] worldMap = getWorldMap();
     private final Set<Integer> pressedKeys = new HashSet<>();
+    private int framesRendered;
+    private int lastFPS;
 
     public RayPanel(int width, int height) {
         this.width = width;
         this.height = height;
+
+        TimerTask updateFPS = new TimerTask() {
+            public void run() {
+                lastFPS = framesRendered;
+                framesRendered = 0;
+            }
+        };
+
+        new Timer().scheduleAtFixedRate(updateFPS, 1000, 1000);
     }
 
     @Override
@@ -197,6 +209,13 @@ public class RayPanel extends JPanel implements KeyListener, Runnable {
         g.fillOval(width - ((int) (posX + 1)*scale),  height - (miniMapHeight*scale) + ((int) posY*scale), scale, scale);
         g.setColor(Color.DARK_GRAY);
         g.drawLine(width - ((int) (posX + 1)*scale) + 2,  height - (miniMapHeight*scale) + ((int) posY*scale) + 2, (int) ((width - ((int) (posX + 1)*scale)) - dirX * 30), (int) ((height - (miniMapHeight*5) + ((int) posY*scale) + dirY * 30)));
+
+        //FPS
+        g.setColor(Color.WHITE);
+        g.drawString(lastFPS + "fps", 0, 10);
+
+
+        framesRendered++;
     }
 
     public void movePlayer(int keyCode){
