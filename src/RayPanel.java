@@ -160,11 +160,12 @@ public class RayPanel extends JPanel implements KeyListener, Runnable {
 
             int imageX = (int) Math.floor(wallX * img.getWidth());
             int imageY;
+            double linesPerPixel = (double) img.getHeight() / lineHeight;
 
             //If the start of the line is above the screen, just start this loop from 0 (we can't see anything above that)
             //Else, start from the start of the line
             for(int i = drawStart < 0 ? 0 : drawStart; i <= drawEnd; i++) {
-                imageY = (int) Math.ceil(((double) img.getHeight() / (lineHeight) * (i - drawStart)));
+                imageY = (int) Math.ceil((linesPerPixel * (i - drawStart)));
                 try {
                     //System.out.println("x" + imageX + ", y" + imageY);
                     Color colour = new Color(img.getRGB(imageX, imageY));
