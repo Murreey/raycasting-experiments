@@ -159,25 +159,22 @@ public class RayPanel extends JPanel implements KeyListener, Runnable {
             wallX -= Math.floor(wallX);
 
             int imageX = (int) Math.floor(wallX * img.getWidth());
-            int imageY;
-            double linesPerPixel = (double) img.getHeight() / lineHeight;
+            double linesPerPixel = (double) lineHeight / img.getHeight();
 
-            //If the start of the line is above the screen, just start this loop from 0 (we can't see anything above that)
-            //Else, start from the start of the line
-            for(int i = drawStart < 0 ? 0 : drawStart; i <= drawEnd; i++) {
-                imageY = (int) Math.ceil((linesPerPixel * (i - drawStart)));
+            for(int i = 0; i < img.getHeight(); i++) {
                 try {
-                    //System.out.println("x" + imageX + ", y" + imageY);
-                    Color colour = new Color(img.getRGB(imageX, imageY));
+                    Color colour = new Color(img.getRGB(imageX, i));
                     if (side) {
                         colour = colour.darker();
                     }
                     g.setColor(colour);
-                    g.drawLine(x, i, x, i);
+                    g.drawLine(x, (int) (drawStart + (i*linesPerPixel)), x, (int) (drawStart + (i*linesPerPixel) + linesPerPixel));
                 } catch (ArrayIndexOutOfBoundsException ex) {
                     //oh well
                 }
             }
+
+
         }
 
         //Mini map
