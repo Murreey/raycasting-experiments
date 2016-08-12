@@ -220,7 +220,7 @@ public class RayPanel extends JPanel implements KeyListener, Runnable {
         //The movement speeds are this small because we check the current pressed Keys every single time the game loop runs
         //Which processes the key lots of times for even a quick press
         double moveSpeed = 0.0000006; //the constant value is in squares/second
-        double rotSpeed = 0.0000003;  //the constant value is in radians/second
+        double rotSpeed = 0.0000004;  //the constant value is in radians/second
         double negativeRotSpeed = rotSpeed * -1.1;
         double oldDirX = dirX, oldPlaneX = planeX;
         double xOffset = 0.5, yOffset = 0.5;
