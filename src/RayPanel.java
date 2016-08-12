@@ -223,7 +223,7 @@ public class RayPanel extends JPanel implements KeyListener, Runnable {
         double rotSpeed = 0.0000004;  //the constant value is in radians/second
         double negativeRotSpeed = rotSpeed * -1.1;
         double oldDirX = dirX, oldPlaneX = planeX;
-        double xOffset = 0.5, yOffset = 0.5;
+        double xOffset = 0.2, yOffset = 0.2;
 
         if(dirX < 0){
             xOffset = xOffset*-1;
