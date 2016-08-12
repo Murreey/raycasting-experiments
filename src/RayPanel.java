@@ -226,22 +226,30 @@ public class RayPanel extends JPanel implements KeyListener, Runnable {
         double rotSpeed = 0.0000003;  //the constant value is in radians/second
         double negativeRotSpeed = rotSpeed * -1.1;
         double oldDirX = dirX, oldPlaneX = planeX;
+        double xOffset = 0.5, yOffset = 0.5;
+
+        if(dirX < 0){
+            xOffset = xOffset*-1;
+        }
+        if(dirY < 0){
+            yOffset = yOffset*-1;
+        }
 
         switch(keyCode)
         {
             case KeyEvent.VK_UP:
-                if(worldMap[(int) (posX + dirX * moveSpeed)][(int) posY] == 0){
+                if(worldMap[(int) (posX + dirX * moveSpeed + xOffset)][(int) posY] == 0){
                     posX += dirX * moveSpeed;
                 }
-                if(worldMap[(int) posX][(int) (posY + dirY * moveSpeed)] == 0){
+                if(worldMap[(int) posX][(int) (posY + dirY * moveSpeed + yOffset)] == 0){
                     posY += dirY * moveSpeed;
                 }
                 break;
             case KeyEvent.VK_DOWN:
-                if(worldMap[(int) (posX - dirX * moveSpeed)][(int) posY] == 0){
+                if(worldMap[(int) (posX - dirX * moveSpeed - xOffset)][(int) posY] == 0){
                     posX -= dirX * moveSpeed;
                 }
-                if(worldMap[(int) posX][(int) (posY - dirY * moveSpeed)] == 0){
+                if(worldMap[(int) posX][(int) (posY - dirY * moveSpeed - yOffset)] == 0){
                     posY -= dirY * moveSpeed;
                 }
                 break;
