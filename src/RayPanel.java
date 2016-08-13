@@ -48,14 +48,6 @@ public class RayPanel extends JPanel implements KeyListener, Runnable {
     public void paintComponent(Graphics g){
         super.paintComponent(g);
 
-        //just draw a big cyan rectangle for the sky
-        g.setColor(Color.CYAN);
-        g.fillRect(0, 0, this.getWidth(), this.getHeight() / 2);
-        //and a big grey one for the floor
-        g.setColor(Color.GRAY);
-        g.fillRect(0, this.getHeight()/2, this.getWidth(), this.getHeight()/2);
-        //the walls will cover the gap, and we can redo this later if we want to get fancier
-
         for(int x = 0; x < width; x++) {
             //calculate ray position and direction
             double cameraX = 2 * x / (double) width - 1;
@@ -174,8 +166,53 @@ public class RayPanel extends JPanel implements KeyListener, Runnable {
                 }
             }
 
+            double floorX, floorY;
+            BufferedImage floorTexture = Texture.BLUE.getImage();
 
+            //decide which way we're drawing the floor tile based on the wall above it
+            if(!side && rayDirX > 0){
+                floorX = mapX;
+                floorY = mapY + wallX;
+            }else if(!side && rayDirX < 0){
+                floorX = mapX + 1;
+                floorY = mapY + wallX;
+            }else if(side && rayDirY > 0){
+                floorX = mapX + wallX;
+                floorY = mapY;
+            }else{
+                floorX = mapX + wallX;
+                floorY = mapY + 1;
+            }
+
+            double distWall = perpWallDist;
+            double distPlayer = 0;
+
+            //floor only needs to be drawn from the bottom of the wall to the bottom of the screen
+            for(int y = drawEnd + 1; y < height; y++){
+                //figure out which pixel of this floor stripe to use at this y value
+                double currentDist = height / (2.0 * y - height);
+                double weight = (currentDist - distPlayer) / (distWall - distPlayer);
+                double currentFloorX = weight * floorX + (1 - weight) * posX;
+                double currentFloorY = weight * floorY + (1 - weight) * posY;
+
+                //find the image pixel for the pixel of floor we're trying to draw
+                imageX = (int) ((currentFloorX * floorTexture.getWidth()) % floorTexture.getWidth());
+                int imageY = (int) ((currentFloorY * floorTexture.getHeight()) % floorTexture.getHeight());
+
+                try {
+                    Color colour = new Color(floorTexture.getRGB(imageX, imageY));
+
+                    g.setColor(colour);
+                    g.drawLine(x, y, x, y);
+                }catch(IndexOutOfBoundsException ex){
+                    //oh well
+                }
+            }
         }
+
+
+
+
 
         //Mini map
         int miniMapWidth = worldMap.length;
