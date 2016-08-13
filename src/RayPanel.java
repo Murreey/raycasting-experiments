@@ -167,7 +167,8 @@ public class RayPanel extends JPanel implements KeyListener, Runnable {
             }
 
             double floorX, floorY;
-            BufferedImage floorTexture = Texture.BLUE.getImage();
+            BufferedImage floorTexture = Texture.STONE.getImage();
+            BufferedImage ceilingTexture = Texture.BLUE.getImage();
 
             //decide which way we're drawing the floor tile based on the wall above it
             if(!side && rayDirX > 0){
@@ -200,10 +201,13 @@ public class RayPanel extends JPanel implements KeyListener, Runnable {
                 int imageY = (int) ((currentFloorY * floorTexture.getHeight()) % floorTexture.getHeight());
 
                 try {
-                    Color colour = new Color(floorTexture.getRGB(imageX, imageY));
-
+                    Color colour = new Color(floorTexture.getRGB(imageX, imageY)).darker();
                     g.setColor(colour);
                     g.drawLine(x, y, x, y);
+
+                    colour = new Color(ceilingTexture.getRGB(imageX, imageY));
+                    g.setColor(colour);
+                    g.drawLine(x, height - y, x, height - y);
                 }catch(IndexOutOfBoundsException ex){
                     //oh well
                 }
